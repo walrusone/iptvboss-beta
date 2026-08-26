@@ -1,6 +1,6 @@
 services:
   iptvboss:
-    image: "${IPTVBOSS_IMAGE:-ghcr.io/walrusone/iptvboss-alpha}:${IPTVBOSS_TAG:-alpha}"
+    image: "${IPTVBOSS_IMAGE:-ghcr.io/walrusone/iptvboss-beta}:${IPTVBOSS_TAG:-beta}"
     pull_policy: always
     restart: unless-stopped
     stop_grace_period: 60s
