@@ -1,0 +1,3 @@
+{$IPTVBOSS_DOMAIN} {
+	reverse_proxy iptvboss:8001
+}
