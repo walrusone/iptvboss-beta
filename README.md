@@ -3,10 +3,10 @@
 This repository publishes the headless IPTVBoss XC Server for amd64 and arm64. The current pre-release image is:
 
 ```text
-ghcr.io/walrusone/iptvboss-alpha
+ghcr.io/walrusone/iptvboss-beta
 ```
 
-Version tags such as `3.11.21` are intended for pinned deployments. The moving `alpha` tag follows the newest container published in the current channel.
+Version tags such as `3.11.21` are intended for pinned deployments. The moving `beta` tag follows the newest container published in the current channel.
 
 ## Standalone Compose setup
 
@@ -136,8 +136,8 @@ Do not run `docker compose down --volumes` unless all persistent data managed by
 The image repository and tag are configured independently so a future release channel can be selected without editing `compose.yaml`:
 
 ```env
-IPTVBOSS_IMAGE=ghcr.io/walrusone/iptvboss-alpha
-IPTVBOSS_TAG=alpha
+IPTVBOSS_IMAGE=ghcr.io/walrusone/iptvboss-beta
+IPTVBOSS_TAG=beta
 ```
 
 For a controlled deployment, replace the tag with an exact tested version. After making a backup:
@@ -177,5 +177,5 @@ The password unlocks the TLS private-key store only. It does not encrypt IPTVBos
 The package is public and can be pulled without a GitHub login:
 
 ```sh
-docker pull ghcr.io/walrusone/iptvboss-alpha:alpha
+docker pull ghcr.io/walrusone/iptvboss-beta:beta
 ```
