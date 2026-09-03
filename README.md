@@ -3,22 +3,22 @@
 This repository publishes the headless IPTVBoss XC Server for amd64 and arm64. The current pre-release image is:
 
 ```text
-ghcr.io/walrusone/iptvboss-beta
+ghcr.io/walrusone/iptvboss-alpha
 ```
 
-Version tags such as `3.11.21` are intended for pinned deployments. The moving `beta` tag follows the newest container published in the current channel.
+Version tags such as `3.11.21` are intended for pinned deployments. The moving `alpha` tag follows the newest container published in the current channel.
 
 ## Standalone Compose setup
 
 Download these files into one directory:
 
 - `compose.yaml`
-- `.env.example`
+- `env.example`
 
 Copy the environment example and edit it:
 
 ```sh
-cp .env.example .env
+cp env.example .env
 nano .env
 ```
 
@@ -27,6 +27,7 @@ The default configuration runs only IPTVBoss and publishes unencrypted HTTP on p
 ```env
 IPTVBOSS_HOST_IP=0.0.0.0
 IPTVBOSS_HOST_PORT=8001
+IPTVBOSS_XC_PORT=8001
 IPTVBOSS_XC_BEHIND_HTTPS_PROXY=false
 IPTVBOSS_HTTPS_ONLY=false
 ```
@@ -44,6 +45,18 @@ docker compose logs --follow
 ```
 
 Open `http://server-private-ip:8001/boss.php`. On a new data volume, the first visitor creates the administrator and completes bootstrap.
+
+`IPTVBOSS_XC_PORT` controls the listener inside the container. It defaults to
+`8001`. The existing `IPTVBOSS_HOST_PORT` controls the host-side published
+port; the Compose template maps that host port to the configured XC listener:
+
+```env
+IPTVBOSS_XC_PORT=9000
+```
+
+For non-Compose launches, use `IPTVBOSS_XC_PORT` or `-xc-port 9000`; the CLI
+option takes precedence over the environment variable. When neither is
+supplied, the persisted XC Server port is used.
 
 ## Bundle Caddy in the same Compose file
 
@@ -114,7 +127,7 @@ IPTVBOSS_HTTPS_ONLY=false
 IPTVBOSS_HOST_IP=127.0.0.1
 ```
 
-A proxy in another container has separate loopback networking. Attach it to a shared user-defined network and use `http://iptvboss:8001`, or publish the backend on a private host address protected by a firewall. Do not expose direct HTTP port `8001` to the Internet.
+A proxy in another container has separate loopback networking. Attach it to a shared user-defined network and use `http://iptvboss:8001` by default, replacing `8001` with the configured `IPTVBOSS_XC_PORT` when needed, or publish the backend on a private host address protected by a firewall. Do not expose the direct HTTP listener to the Internet.
 
 ## Data and backups
 
@@ -136,8 +149,8 @@ Do not run `docker compose down --volumes` unless all persistent data managed by
 The image repository and tag are configured independently so a future release channel can be selected without editing `compose.yaml`:
 
 ```env
-IPTVBOSS_IMAGE=ghcr.io/walrusone/iptvboss-beta
-IPTVBOSS_TAG=beta
+IPTVBOSS_IMAGE=ghcr.io/walrusone/iptvboss-alpha
+IPTVBOSS_TAG=alpha
 ```
 
 For a controlled deployment, replace the tag with an exact tested version. After making a backup:
@@ -177,5 +190,5 @@ The password unlocks the TLS private-key store only. It does not encrypt IPTVBos
 The package is public and can be pulled without a GitHub login:
 
 ```sh
-docker pull ghcr.io/walrusone/iptvboss-beta:beta
+docker pull ghcr.io/walrusone/iptvboss-alpha:alpha
 ```
